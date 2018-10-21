@@ -4,6 +4,8 @@
 // Set up an empty cart for use on this page.
 var cart = new Cart([]);
 
+console.log(cart);
+
 // On screen load, we call this method to put all of the busmall options
 // (the things in the Product.allProducts array) into the drop down list.
 function populateForm() {
@@ -12,12 +14,14 @@ function populateForm() {
   var selectElement = document.getElementById('items');
   for (var i in Product.allProducts) {
     var newOption = document.createElement('OPTION');
+    newOption.value = Product.allProducts[i].name;
     // newOption.textContent = Product.allProducts[i].name;
     console.log(newOption);
     // console.log('*****', yes);
     // newOption.value = Product.allProducts[i];
     var optionText = document.createTextNode(Product.allProducts[i].name);
     newOption.appendChild(optionText);
+    selectElement.appendChild(newOption);
   }
 
 }
@@ -42,12 +46,14 @@ function handleSubmit(event) {
 
 // TODO: Add the selected item and quantity to the cart
 function addSelectedItemToCart() {
-  var selectItem = document.getElementsByTagName('option').value;
-  var selectQuantity = document.getElementById('quantity');
+  var selectItem = document.getElementById('items').value;
+  var selectQuantity = document.getElementById('quantity').value;
   // TODO: suss out the item picked from the select list
   // TODO: get the quantity
   // TODO: using those, add one item to the Cart
-  cart.items.push(selectItem,selectQuantity);
+  var currentItem = new CartItem(selectItem,selectQuantity);
+  cart.items.push(currentItem);
+  console.log(cart.items);
   updateCounter();
 }
 
@@ -63,16 +69,16 @@ function updateCounter() {
 
 }
 
+var tableEl = document.getElementById('cartContents');
 // TODO: As you add items into the cart, show them (item & quantity) in the cart preview div
 function updateCartPreview() {
   for(var i in cart.items) {
-    var tableEl = document.getElementById('cart');
 
     var tabRowEl = document.createElement('tr');
-
+    console.log('here', cart.items[i].product);
     var tabHeadEl = document.createElement('th');
 
-    tabHeadEl.textContent = cart.items[i];
+    tabHeadEl.textContent = cart.items[i].product;
 
     tabRowEl.appendChild(tabHeadEl);
 
